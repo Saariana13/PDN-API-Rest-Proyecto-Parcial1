@@ -1,0 +1,86 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Datos del Médico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.15.0/font/bootstrap-icons.css">
+</head>
+<body style="margin-left: 15px;">
+
+    <h2>Datos del Médico</h2>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <td>{{medico.id}}</td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td>{{medico.nombre}}</td>
+        </tr>
+        <tr>
+            <th>Apellido</th>
+            <td>{{medico.apellido}}</td>
+        </tr>
+        <tr>
+            <th>Sexo</th>
+            <td>{{medico.sexo}}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{medico.email}}</td>
+        </tr>
+        <tr>
+            <th>Especialidad</th>
+            <td>{{medico.especialidad}}</td>
+        </tr>
+    </table>
+
+    <h2>Datos del Paciente</h2>
+    {% if medico.paciente %}
+        <table class="table">
+            <tr>
+                <th>Nombre</th>
+                <td>{{medico.paciente.nombre}}</td>
+            </tr>
+            <tr>
+                <th>Edad</th>
+                <td >{{medico.paciente.edad}}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{medico.paciente.email}}</td>
+            </tr>
+            <tr>
+                <th>Motivo</th>
+                <td>{{medico.paciente.motivo}}</td>
+            </tr>
+        </table>
+    {% else %}
+        <p>No hay datos de paciente asociados a este doctor.</p>
+    {% endif %}
+
+    <h2>Detalle de la Cita</h2>
+    {% if medico.cita %}
+        <table class="table">
+            <tr>
+                <th>Paciente</th>
+                <td>{{medico.cita.paciente}}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{medico.cita.fecha}}</td>
+            </tr>
+            <tr>
+                <th>Hora</th>
+                <td>{{medico.cita.hora}}</td>
+            </tr>
+        </table>
+    {% else %}
+        <p>No hay datos de cita asociados a este doctor.</p>
+    {% endif %}
+
+    <a href="{% url 'inicio' %}" class="btn btn-dark" style="margin-left: 10px;">Regresar</a>
+
+</body>
+</html>

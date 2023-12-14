@@ -4,6 +4,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.template import loader
 from medico.models import Doctor
 from medico.forms import MedicoFormulario
+from openpyxl.workbook import Workbook
 
 MedicoFormulario = modelform_factory(Doctor, exclude=['activo',])
 
@@ -43,3 +44,31 @@ def eliminar_medico(request, id):
     if doctor:
         doctor.delete()
         return redirect('inicio')
+
+def generar_reporte(request, *args, **kwargs):
+    medico = Doctor.objects.order_by('apellido', 'nombre')
+    wb = Workbook()
+    ws = wb.active
+    ws['D1'] = 'REPORTE DE MÉDICOS'
+    ws.merge_cells('D1:G1')
+    ws['B3'] = 'ID'
+    ws['C3'] = 'NOMBRE'
+    ws['D3'] = 'APELLIDO'
+    ws['E3'] = 'EMAIL'
+    ws['F3'] = 'ESPECIALIDAD'
+    cont = 4
+
+    for doctor in medico:
+        ws.cell(row=cont, column=2).value = doctor.id
+        ws.cell(row=cont, column=3).value = doctor.nombre
+        ws.cell(row=cont, column=4).value = doctor.apellido
+        ws.cell(row=cont, column=5).value = doctor.email
+        ws.cell(row=cont, column=6).value = doctor.especialidad
+        cont = cont + 1
+
+    nombre_archivo = "ReporteMédicosExcel.xlsx"
+    response = HttpResponse(content_type="application/ms-excel")
+    contenido = "attachment; filename={0}".format(nombre_archivo)
+    response["Content-Disposition"] = contenido
+    wb.save(response)
+    return response

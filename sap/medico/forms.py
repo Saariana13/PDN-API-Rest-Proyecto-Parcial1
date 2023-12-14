@@ -1,7 +1,6 @@
 from django.forms import ModelForm, EmailInput
 from medico.models import Doctor
 
-
 class MedicoFormulario(ModelForm):
     class Meta:
         model = Doctor

@@ -2,9 +2,11 @@ from django.http import HttpResponse
 from django.forms import modelform_factory
 from django.shortcuts import redirect, get_object_or_404
 from django.template import loader
-from medico.models import Doctor
+from medico.models import Doctor, Paciente, Cita
 from medico.forms import MedicoFormulario
 from openpyxl.workbook import Workbook
+from rest_framework import viewsets, permissions
+from medico.serializers import PacienteSerializer, DoctorSerializer, CitaSerializer
 
 MedicoFormulario = modelform_factory(Doctor, exclude=['activo',])
 
@@ -72,3 +74,16 @@ def generar_reporte(request, *args, **kwargs):
     response["Content-Disposition"] = contenido
     wb.save(response)
     return response
+
+class PacienteViewSet(viewsets.ModelViewSet):
+    queryset = Paciente.objects.all()
+    serializer_class = PacienteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+class DoctorViewSet(viewsets.ModelViewSet):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+class CitaViewSet(viewsets.ModelViewSet):
+    queryset = Cita.objects.all()
+    serializer_class = CitaSerializer
+    permission_classes = [permissions.IsAuthenticated]
